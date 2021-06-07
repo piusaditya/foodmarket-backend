@@ -63,12 +63,11 @@ class User extends Authenticatable
         'profile_photo_url',
     ];
 
-    // Accessor change format timestamps to epoch
+    // Accessor change format date to UNIX timestamps (epoch)
     public function getCreatedAtAttribute($value)
     {
         return Carbon::parse($value)->timestamp;
     }
-
 
     public function geUpdatedAtAttribute($value)
     {
