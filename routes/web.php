@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\API\MidtransController;
+use App\Http\Controllers\DashboardController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,16 +16,29 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+
+    //return view('welcome');
 });
 
-Route::get('/debug-sentry', function () {
-    throw new Exception('My first Sentry error!');
+// Route::get('/debug-sentry', function () {
+//     throw new Exception('My first Sentry error!');
+// });
+
+// Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
+//     return view('dashboard');
+// })->name('dashboard');
+
+// Homepage
+Route::get('/', function () {
+    return redirect()->route('dashboard');
 });
 
-Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
-    return view('dashboard');
-})->name('dashboard');
+// Dashboard
+Route::prefix('dashboard')
+    ->middleware(['auth:sanctum', 'admin'])
+    ->group(function () {
+        Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
+    });
 
 // Midtrans related
 
